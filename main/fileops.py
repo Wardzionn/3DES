@@ -11,6 +11,7 @@ def encode_from_file(input_path, output_path, keys):
     except FileNotFoundError:
         print("File path is incorrect!")
 
+
 def decode_from_file(input_path, output_path, keys):
     try:
         with open(input_path, "r") as in_file:

@@ -9,7 +9,7 @@ def basic(permutation_table, to_permutate):
 
     permutated = bitarray()
     for i in permutation_table:
-        permutated.append(to_permutate[int(i) - 1])
+        permutated.append(to_permutate[i - 1])
     return permutated
 
 
@@ -21,12 +21,9 @@ def get_box_coordinates(_6bits):
 
 
 def sbox(input48):
-    current6bits = bitarray()
     result32 = bitarray()
     chunks = bitops.split_bitarray_into_chunks(input48, 6)
     for i in range(8):
-        #current6bits.append(bitops.split_into_chunks(input48, 6)[i])
         row, column = get_box_coordinates(chunks[i])
         result32.extend(convert.dec_to_bin(tables.SBOX[i][row][column]))
-        #current6bits.clear()
     return result32

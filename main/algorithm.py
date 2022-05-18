@@ -2,8 +2,7 @@ import tables
 import permutation
 import convert
 import bitops
-import random
-import string
+import secrets
 from bitarray import bitarray
 
 
@@ -11,11 +10,11 @@ from bitarray import bitarray
 def random_keys():
     keys = list()
     while len(keys) < 3:
-        keys.append(''.join(random.choices("0123456789ABCDEF", k=16)))
+        keys.append(''.join(secrets.token_hex(8)))
     return keys
 
 
-# generates a list of keys for each round based on supplied keys
+# generates a list of subkeys for each round based on supplied keys
 def generate_keys(key64):
     keys = list()
     key56 = permutation.basic(tables.PC1, key64)
@@ -52,9 +51,8 @@ def des(message, key, mode):
             new_r = bitops.xor(left, f_function(right, all_keys[i]))
         else:
             new_r = bitops.xor(left, f_function(right, all_keys[15 - i]))
-        new_l = right
+        left = right
         right = new_r
-        left = new_l
     result = permutation.basic(tables.INVERSE_PERMUTATION_TABLE, right + left)
     if mode == "d":
         result = convert.bin_to_ascii(result)

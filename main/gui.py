@@ -1,9 +1,18 @@
+"""
+Autorzy:
+Jakub Wardyn 236683
+Szymon Ziemecki 236709
+
+"""
+
 import PySimpleGUI as sg
 from bitarray import bitarray
 import pyperclip
 import algorithm as al
 import fileops
 import sys
+import convert
+
 
 MODE = "e"
 INPUT = "k"
@@ -33,9 +42,9 @@ col2 = [[sg.Text("Mode: Encryption", key='mode_message')],
         [sg.Text('Enter key 2:', key="key2_text"), sg.InputText(size=(None, 50), key='key2_box')],
         [sg.Text('Enter key 3:', key="key3_text"), sg.InputText(size=(None, 50), key='key3_box')],
         [sg.HSeparator()],
-        [sg.Text('Enter input text:', key='input_text'), sg.Multiline(key='input_value')],
+        [sg.Text('Enter input text:', key='input_text'), sg.Multiline(key='input_value', size=(50, 5))],
         [sg.Text('', key='result_message')],
-        [sg.Text('Result:', key='output_text'), sg.Multiline(key='output_value')],
+        [sg.Text('Result:', key='output_text'), sg.Multiline(key='output_value', size=(50, 5))],
         [sg.Button('Process'), sg.Button('Copy output', key='copy')]]
 
 layout = [[sg.Text('Triple DES encryption and decryption')],
@@ -68,10 +77,10 @@ while True:
         window.Element('key1_text').update(value='Generated key 1:')
         window.Element('key2_text').update(value='Generated key 2:')
         window.Element('key3_text').update(value='Generated key 3:')
-        keys = al.random_keys()
-        window.Element('key1_box').update(value=keys[0])
-        window.Element('key2_box').update(value=keys[1])
-        window.Element('key3_box').update(value=keys[2])
+        gen_keys = al.random_keys()
+        window.Element('key1_box').update(value=gen_keys[0])
+        window.Element('key2_box').update(value=gen_keys[1])
+        window.Element('key3_box').update(value=gen_keys[2])
     if event == "custom":
         window.Element('key1_text').update(value='Enter key 1:')
         window.Element('key2_text').update(value='Enter key 2:')
@@ -85,8 +94,6 @@ while True:
         keys = list()
         for i in range(3):
             keys.append(values['key' + str(i + 1) + '_box'])
-
-
         print(keys)
         try:
             if INPUT == 'f':
@@ -96,10 +103,7 @@ while True:
                     fileops.decode_from_file(input_box, output_box, keys)
             else:
                 if MODE == 'e':
-
                     processed = al.triple_des_encryption(input_box, keys[0], keys[1], keys[2]).to01()
-                    # processed = al.triple_des_encryption("1 2 3 4 5 6 7 8", keys[0], keys[1], keys[2]).to01()
-
                 else:
                     processed = al.triple_des_decryption(bitarray(input_box), keys[0], keys[1], keys[2])
                 window.Element('output_value').update(value=processed)
@@ -107,5 +111,6 @@ while True:
             print(sys.exc_info()[1])
     if event == "copy":
         pyperclip.copy(values['output_value'])
+
 
 window.close()
