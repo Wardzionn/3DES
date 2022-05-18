@@ -69,6 +69,6 @@ import algorithm
 #
 #
 #
-a = "1 2 3 4 5 6 7 8"
-b = bitops.split_string_into_chunks(a, 8)
+a = "12436ABC"
+b = convert.hex_to_bin(a)
 print(b)

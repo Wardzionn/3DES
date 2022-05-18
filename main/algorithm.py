@@ -11,7 +11,7 @@ from bitarray import bitarray
 def random_keys():
     keys = list()
     while len(keys) < 3:
-        keys.append(''.join(random.choices(string.ascii_letters + string.digits, k=8)))
+        keys.append(''.join(random.choices("0123456789ABCDEF", k=16)))
     return keys
 
 
@@ -43,7 +43,7 @@ def f_function(input32, key48):
 def des(message, key, mode):
     if mode == "e":
         message = convert.ascii_to_bin(message)
-    bin_key = convert.ascii_to_bin(key)
+    bin_key = convert.hex_to_bin(key)
     all_keys = generate_keys(bin_key)
     permutated_text = permutation.basic(tables.INITIAL_PERMUTATION_TABLE, message)
     left, right = bitops.split_in_half(permutated_text)
@@ -62,6 +62,9 @@ def des(message, key, mode):
 
 
 def triple_des_encryption(message, key1, key2, key3):
+    if len(key1) < 8 or len(key2) < 8 or len(key3) < 8:
+        raise ValueError("Wrong key length or no key specified!")
+
     encoded = bitarray()
     chunks64 = bitops.split_string_into_chunks(message, 8)
     padding_counter = 0
@@ -80,6 +83,9 @@ def triple_des_encryption(message, key1, key2, key3):
 
 
 def triple_des_decryption(encoded, key1, key2, key3):
+    if len(key1) < 8 or len(key2) < 8 or len(key3) < 8:
+        raise ValueError("Wrong key length or no key specified!")
+
     chunks64 = bitops.split_bitarray_into_chunks(encoded, 64)
     decoded = ""
     for i in range(len(chunks64)):

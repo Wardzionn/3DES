@@ -4,19 +4,6 @@ from bitarray import bitarray
 
 # to binary
 def ascii_to_bin(text):
-    # binary = bitarray()
-    # # binary.frombytes(text.encode('utf-8'))
-    # dec = []
-    # binary_list = bitarray()
-    # for i in text:
-    #     dec.append(ord(i))
-    # for i in dec:
-    #     binary.append(int(bin(i)[2:]))
-    #     while len(binary) < 8:
-    #         binary = '0' + binary
-    #     binary_list.append(binary.to01())
-    #     binary.clear()
-    # return binary_list
     result = bitarray()
     for c in text:
         bits = bin(ord(c))[2:]
@@ -46,3 +33,29 @@ def bin_to_ascii(binary):
         char = chars[i].to01()
         result += chr(int(char, 2))
     return result
+
+
+# hex
+def hex_to_bin(key):
+    dictionary = {
+        '0': "0000",
+        '1': "0001",
+        '2': "0010",
+        '3': "0011",
+        '4': "0100",
+        '5': "0101",
+        '6': "0110",
+        '7': "0111",
+        '8': "1000",
+        '9': "1001",
+        'A': "1010",
+        'B': "1011",
+        'C': "1100",
+        'D': "1101",
+        'E': "1110",
+        'F': "1111"}
+    bin_key = bitarray()
+    for i in range(len(key)):
+        temp = bitarray(dictionary[key[i]])
+        bin_key.extend(temp)
+    return bin_key
