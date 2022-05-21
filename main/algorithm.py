@@ -29,7 +29,7 @@ def generate_keys(key64):
     return keys
 
 
-# function used during each round of the algorithm on the current left half of input
+# function used during each round of the algorithm on the current right half of input
 def f_function(input32, key48):
     prepare48 = permutation.basic(tables.EXPANSION_TABLE, input32)
     prepare48 = bitops.xor(prepare48, key48)

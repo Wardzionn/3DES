@@ -67,6 +67,7 @@ def shift(key, number_of_bits):
         number_of_bits = number_of_bits + 1
     key[:] = key[: i] + shifted_key
 
+
     return key
 
 
